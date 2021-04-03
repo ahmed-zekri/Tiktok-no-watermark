@@ -1,0 +1,8 @@
+1617472502373	geckodriver	INFO	Listening on 127.0.0.1:52691
+1617472505391	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\AHMEDZ~1\\AppData\\Local\\Temp\\rust_mozprofile37fs10"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1617472507112	Marionette	INFO	Listening on port 52699
+1617472507426	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://pagead2.googlesyndication.com/bg/71hr94SUjmI4WsmVKl_xSF-LeUxrKTKLcbZwOLomvE8.js line 1 > eval line 649 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
