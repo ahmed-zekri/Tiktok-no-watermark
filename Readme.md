@@ -7,7 +7,7 @@ A simple script that will enable you to download any tiktok video without waterm
 
 ## Usage
 ```
-pip install -r requirements.txt
+pip install selenium
 ```
 
 
