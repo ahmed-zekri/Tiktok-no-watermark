@@ -12,7 +12,7 @@ pip install selenium
 
 
 ```
-python tiktok_no_water_mark
+python tiktok_no_water_mark.py
 ```
 
 Enter a valid tiktok url, a sample video is https://www.tiktok.com/@ahmed_bchir_officiele/video/6944706687580327174
