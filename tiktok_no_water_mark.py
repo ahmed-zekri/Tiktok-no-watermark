@@ -1,9 +1,5 @@
-import os
 import re
-import shutil
-import sys
 import tkinter as tk
-from pathlib import Path
 
 from win32api import GetSystemMetrics
 
