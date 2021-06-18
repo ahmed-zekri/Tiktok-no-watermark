@@ -14,7 +14,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 class SeleniumUtils:
     def __init__(self, callback, **kwargs):
         self.url = kwargs.get('tiktok_url', 'https://www.tiktok.com/@amara.mari/video/6974391789390187777')
-        self.video_name = kwargs.get('video_name', re.findall(r'/video/([\d]+)', self.url)[0] + ".mp4")
+        self.video_name = kwargs.get('video_name', re.findall(r'/video/([\d]+)', self.url)[0])
         self.headless = kwargs.get('headless', True)
         self.callback = callback
         options = Options()
