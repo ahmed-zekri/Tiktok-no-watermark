@@ -1,4 +1,6 @@
+import os.path
 import re
+import sys
 
 import requests
 from selenium import webdriver
@@ -22,10 +24,17 @@ class SeleniumUtils:
         profile.set_preference('browser.download.manager.showWhenStarting', False)
         profile.set_preference('browser.download.dir', '/tmp')
         profile.set_preference("media.volume_scale", "0.0")
+        gecko_path = os.path.join(self.get_base_path(), 'geckodriver.exe')
         self.browser = webdriver.Firefox(options=options, firefox_profile=profile,
-                                         executable_path=r'geckodriver.exe', service_args=["--marionette-port", "2828"])
+                                         executable_path=gecko_path, service_args=["--marionette-port", "2828"])
         self.wait = WebDriverWait(self.browser, 10, poll_frequency=1,
                                   ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
+
+    @staticmethod
+    def get_base_path():
+        if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+            return sys._MEIPASS
+        return ''
 
     def download_video(self):
 
