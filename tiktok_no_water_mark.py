@@ -18,6 +18,7 @@ def launch_download():
                      url.strip())
     if match is None:
         info.config(text=f'Invalid tiktok url')
+        button["state"] = "normal"
         return
     api = SeleniumUtils(update_ui, tiktok_url=url, headless=True)
     api.download_video()
