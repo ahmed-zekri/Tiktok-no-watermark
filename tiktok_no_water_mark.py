@@ -20,7 +20,11 @@ def launch_download():
         info.config(text=f'Invalid tiktok url')
         button["state"] = "normal"
         return
-    api = SeleniumUtils(update_ui, tiktok_url=url, headless=True)
+
+    kwargs = {'tiktok_url': url, 'headless': True}
+    if len(re.findall(r'[\w\W]+', tiktok_name.get())) > 0:
+        kwargs['video_name'] = tiktok_name.get()
+    api = SeleniumUtils(update_ui, **kwargs)
     api.download_video()
     button["state"] = "normal"
 
@@ -29,7 +33,7 @@ if __name__ == '__main__':
     window = tk.Tk()
     screen_width = GetSystemMetrics(0)
     screen_height = GetSystemMetrics(1)
-    window.geometry(f"{int(screen_width / 2)}x{int(screen_height / 3)}")
+    window.geometry(f"{int(screen_width / 3)}x{int(screen_height / 3.5)}")
     window.winfo_toplevel().title("Tiktok no watermark downloader")
     tiktok_hint = tk.Label(
         text="Enter tiktok video url\n an example is like this:\n"
@@ -38,11 +42,16 @@ if __name__ == '__main__':
     tiktok_url = tk.Entry()
 
     info = tk.Label(text="", fg='#0000CD')
+    tiktok_name_hint = tk.Label(
+        text="Enter the video name to be saved, if you leave it blank,\n video id will be used")
+    tiktok_name = tk.Entry()
 
     button = tk.Button(text="Download video", command=launch_download)
 
     tiktok_hint.pack()
     tiktok_url.pack()
+    tiktok_name_hint.pack()
+    tiktok_name.pack()
     info.pack()
     button.pack()
 
