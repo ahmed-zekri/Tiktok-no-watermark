@@ -10,10 +10,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 
 class SeleniumUtils:
-    def __init__(self, **kwargs):
+    def __init__(self, callback, **kwargs):
         self.url = kwargs.get('tiktok_url', 'https://www.tiktok.com/@amara.mari/video/6974391789390187777')
         self.video_name = kwargs.get('video_name', re.findall(r'/video/([\d]+)', self.url)[0] + ".mp4")
         self.headless = kwargs.get('headless', True)
+        self.callback = callback
         options = Options()
         options.headless = self.headless
         profile = webdriver.FirefoxProfile()
@@ -28,7 +29,7 @@ class SeleniumUtils:
 
     def download_video(self):
 
-        print('Please wait while we find your video')
+        self.callback('Please wait while we find your video')
         self.browser.get('https://ssstik.io/')
 
         text_url = self.wait.until(EC.presence_of_element_located(
@@ -55,11 +56,11 @@ class SeleniumUtils:
                 self.browser.switch_to.window(main_handler)
 
                 break
-        print(f'Video found downloading {self.video_name} please wait')
+        self.callback(f'Video found downloading {self.video_name} please wait')
 
         r = requests.get(video_url, allow_redirects=True)
 
         with open(f'{self.video_name}.mp4', "wb") as f:
             f.write(r.content)
-            print(f'Video {self.video_name} downloaded successfully')
+            self.callback(f'Video {self.video_name} downloaded successfully')
         self.browser.close()
