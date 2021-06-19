@@ -5,6 +5,7 @@ import sys
 import requests
 from selenium.common.exceptions import ElementNotVisibleException, ElementNotSelectableException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire import webdriver
@@ -19,10 +20,14 @@ class SeleniumUtils:
         self.callback = callback
         gecko_path = os.path.join(self.get_base_path(), 'geckodriver.exe')
         kwargs = {'service_args': ["--marionette-port", "2828"]}
-
-        profile, options = self.set_up_firefox()
-
-        kwargs['seleniumwire_options'] = options
+        if self.proxy is not None:
+            profile, options = self.set_up_firefox()
+            kwargs['seleniumwire_options'] = options
+        else:
+            profile = self.set_up_firefox()
+        firefox_options = Options()
+        firefox_options.headless = self.headless
+        kwargs['firefox_options'] = firefox_options
         kwargs['firefox_profile'] = profile
         kwargs['executable_path'] = gecko_path
         self.browser = webdriver.Firefox(**kwargs)
@@ -30,25 +35,22 @@ class SeleniumUtils:
                                   ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
 
     def set_up_firefox(self):
-        options = {
-            'headless': self.headless
-
-        }
-
-        if self.proxy is not None:
-            options = {
-                'proxy': {
-                    'http': self.proxy,
-                    'https': self.proxy,
-                    'no_proxy': 'localhost,127.0.0.1'
-                }
-            }
         profile = webdriver.FirefoxProfile()
         profile.set_preference('browser.download.folderList', 2)  # custom location
         profile.set_preference('browser.download.manager.showWhenStarting', False)
         profile.set_preference('browser.download.dir', '/tmp')
         profile.set_preference("media.volume_scale", "0.0")
-        return profile, options
+        if self.proxy is not None:
+            options = {
+                'proxy': {
+
+                    'http': self.proxy,
+                    'https': self.proxy,
+                    'no_proxy': 'localhost,127.0.0.1'
+                }
+            }
+            return profile, options
+        return profile
 
     @staticmethod
     def get_base_path():
@@ -96,4 +98,4 @@ class SeleniumUtils:
         with open(f'{self.video_name}.mp4', "wb") as f:
             f.write(r.content)
             self.callback(f'Video {self.video_name} downloaded successfully')
-        # self.browser.close()
+        self.browser.close()
