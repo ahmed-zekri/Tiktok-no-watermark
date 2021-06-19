@@ -31,7 +31,7 @@ class SeleniumUtils:
         kwargs['firefox_profile'] = profile
         kwargs['executable_path'] = gecko_path
         self.browser = webdriver.Firefox(**kwargs)
-        self.wait = WebDriverWait(self.browser, 10, poll_frequency=1,
+        self.wait = WebDriverWait(self.browser, 20, poll_frequency=1,
                                   ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
 
     def set_up_firefox(self):
@@ -81,7 +81,7 @@ class SeleniumUtils:
             if handle != self.browser.current_window_handle:
                 self.browser.switch_to.window(handle)
                 self.wait.until(
-                    lambda x: x.find_element_by_tag_name("video"))
+                    lambda x: 'blank' not in x.current_url)
                 video_url = self.browser.current_url
                 self.browser.close()
                 self.browser.switch_to.window(main_handler)
