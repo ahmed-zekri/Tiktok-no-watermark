@@ -22,12 +22,16 @@ def launch_download():
         button["state"] = "normal"
         return
 
-    kwargs = {'tiktok_url': url, 'headless': False}
+    kwargs = {'tiktok_url': url, 'headless': True}
     proxy_password = re.findall(r'[\w\d]+://[\w\d.*+_?!]+:[\w\d.*+_?!]+@[\d.]+:[\d]+', tiktok_proxy.get().strip())
     proxy_no_password = re.findall(r'[\w\d]+://[\d.]+:[\d]+', tiktok_proxy.get().strip())
     if len(proxy_password) > 0 or len(proxy_no_password) > 0:
         kwargs['proxy'] = tiktok_proxy.get().strip()
-
+    else:
+        if len(tiktok_proxy.get()) > 0:
+            info.config(text=f'Invalid proxy scheme,try again or leave the proxy field empty if you don\'t have one')
+            button["state"] = "normal"
+            return
     if len(re.findall(r'[\w\W]+', tiktok_name.get().strip())) > 0:
         kwargs['video_name'] = tiktok_name.get().strip()
     try:

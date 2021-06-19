@@ -92,4 +92,4 @@ class SeleniumUtils:
         with open(f'{self.video_name}.mp4', "wb") as f:
             f.write(r.content)
             self.callback(f'Video {self.video_name} downloaded successfully')
-        # self.browser.close()
+        self.browser.close()
