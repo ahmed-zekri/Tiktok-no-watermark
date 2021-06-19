@@ -3,12 +3,11 @@ import re
 import sys
 
 import requests
-from selenium import webdriver
 from selenium.common.exceptions import ElementNotVisibleException, ElementNotSelectableException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from seleniumwire import webdriver
 
 
 class SeleniumUtils:
@@ -16,19 +15,40 @@ class SeleniumUtils:
         self.url = kwargs.get('tiktok_url', 'https://www.tiktok.com/@amara.mari/video/6974391789390187777')
         self.video_name = kwargs.get('video_name', re.findall(r'/video/([\d]+)', self.url)[0])
         self.headless = kwargs.get('headless', True)
+        self.proxy = kwargs.get('proxy', None)
         self.callback = callback
-        options = Options()
-        options.headless = self.headless
+        gecko_path = os.path.join(self.get_base_path(), 'geckodriver.exe')
+        kwargs = {'service_args': ["--marionette-port", "2828"]}
+
+        profile, options = self.set_up_firefox()
+
+        kwargs['seleniumwire_options'] = options
+        kwargs['firefox_profile'] = profile
+        kwargs['executable_path'] = gecko_path
+        self.browser = webdriver.Firefox(**kwargs)
+        self.wait = WebDriverWait(self.browser, 10, poll_frequency=1,
+                                  ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
+
+    def set_up_firefox(self):
+        options = {
+            'headless': self.headless
+
+        }
+
+        if self.proxy is not None:
+            options = {
+                'proxy': {
+                    'http': self.proxy,
+                    'https': self.proxy,
+                    'no_proxy': 'localhost,127.0.0.1'
+                }
+            }
         profile = webdriver.FirefoxProfile()
         profile.set_preference('browser.download.folderList', 2)  # custom location
         profile.set_preference('browser.download.manager.showWhenStarting', False)
         profile.set_preference('browser.download.dir', '/tmp')
         profile.set_preference("media.volume_scale", "0.0")
-        gecko_path = os.path.join(self.get_base_path(), 'geckodriver.exe')
-        self.browser = webdriver.Firefox(options=options, firefox_profile=profile,
-                                         executable_path=gecko_path, service_args=["--marionette-port", "2828"])
-        self.wait = WebDriverWait(self.browser, 10, poll_frequency=1,
-                                  ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
+        return profile, options
 
     @staticmethod
     def get_base_path():
@@ -72,4 +92,4 @@ class SeleniumUtils:
         with open(f'{self.video_name}.mp4', "wb") as f:
             f.write(r.content)
             self.callback(f'Video {self.video_name} downloaded successfully')
-        self.browser.close()
+        # self.browser.close()
