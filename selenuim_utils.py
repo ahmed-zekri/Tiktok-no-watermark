@@ -87,9 +87,13 @@ class SeleniumUtils:
                 break
         self.callback(f'Video found downloading {self.video_name} please wait')
 
-        r = requests.get(video_url, allow_redirects=True)
+        kwargs = {'allow_redirects': True}
+        if self.proxy is not None:
+            kwargs['proxies'] = {'http': self.proxy, 'https': self.proxy}
+
+        r = requests.get(video_url, **kwargs)
 
         with open(f'{self.video_name}.mp4', "wb") as f:
             f.write(r.content)
             self.callback(f'Video {self.video_name} downloaded successfully')
-        self.browser.close()
+        # self.browser.close()

@@ -37,8 +37,9 @@ def launch_download():
     try:
         api = SeleniumUtils(update_ui, **kwargs)
         api.download_video()
-    except Exception as e:
-        update_ui(f"{e}")
+    except Exception:
+        update_ui(f"Server failed to deliver a response, consider using "
+                  f"or updating your proxy\n and retry again")
     button["state"] = "normal"
 
 
@@ -46,7 +47,7 @@ if __name__ == '__main__':
     window = tk.Tk()
     screen_width = GetSystemMetrics(0)
     screen_height = GetSystemMetrics(1)
-    window.geometry(f"{int(screen_width / 3)}x{int(screen_height / 3)}")
+    window.geometry(f"{int(screen_width / 2.5)}x{int(screen_height / 3)}")
     window.winfo_toplevel().title("Tiktok no watermark downloader")
     tiktok_hint = tk.Label(
         text="Enter tiktok video url\n an example is like this:\n"
