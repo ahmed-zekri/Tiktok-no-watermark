@@ -1,19 +1,36 @@
 ## No watermark Tiktok video downloader
 ## Pre Requirements
 
-python         3.7
+python         3.7+
 
 A simple script that will enable you to download any tiktok video without watermark
 
+## Install
+```
+pip install -r requirements.txt
+```
 ## Usage
 ```
-pip install selenium
-```
+usage: tiktok_no_water_mark.py [-h] [-ng] [-url URL] [-o OUTPUT] [-p PROXY]
+
+A script to download tiktok videos without watermarks
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -ng, --no-gui         Launch the script without GUI
+  -url URL              tiktok video url an example is like this: 
+                        https://www.tiktok.com/@luadoll/video/6974240019078794497
+  -o OUTPUT, --output OUTPUT
+                        Specify thr file name in which the output file will be
+                        named in
+  -p PROXY, --proxy PROXY
+                        A proxy must follow the following pattern
+                        protocol://username:password@host:port
 
 
 ```
-python tiktok_no_water_mark.py
-```
+
+
 
 Enter a valid tiktok url, a valid url is like this https://www.tiktok.com/@ahmed_bchir_officiele/video/6944706687580327174
 
