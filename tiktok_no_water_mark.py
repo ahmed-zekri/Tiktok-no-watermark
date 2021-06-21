@@ -36,7 +36,7 @@ def launch_download():
             button["state"] = "normal"
         return
 
-    kwargs = {'tiktok_url': url, 'headless': True}
+    kwargs = {'tiktok_url': url, 'headless': not non_headless}
     proxy_password = re.findall(r'[\w\d]+://[\w\d.*+_?!]+:[\w\d.*+_?!]+@[\d.]+:[\d]+', proxy)
     proxy_no_password = re.findall(r'[\w\d]+://[\d.]+:[\d]+', proxy)
     if len(proxy_password) > 0 or len(proxy_no_password) > 0:
@@ -69,10 +69,13 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output', help="Specify thr file name in which the output file will be named in", )
     parser.add_argument('-p', '--proxy', help="A proxy must follow the following pattern \n"
                                               "protocol://username:password@host:port\n", )
+    parser.add_argument('-nh', '--non-headless', default=False, action='store_true',
+                        help="Launch the web browser in non headless mode", )
     args = parser.parse_args()
     if '-url' not in sys.argv and ('-ng' in sys.argv or '--no-gui' in sys.argv):
         raise parser.error('You must specify the tiktok url using -url in non gui mode')
     no_gui = args.no_gui
+    non_headless = args.non_headless
     window = tk.Tk()
     if no_gui:
         launch_download()
