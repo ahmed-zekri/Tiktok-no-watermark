@@ -61,7 +61,12 @@ def launch_download():
         button["state"] = "normal"
 
 
+def check_executable():
+    return re.match(r'[\w\W]*.exe$', sys.argv[0]) is not None
+
+
 if __name__ == '__main__':
+    is_executable = check_executable()
     parser = argparse.ArgumentParser(description="A script to download tiktok videos without watermarks")
     parser.add_argument('-ng', '--no-gui', default=False, action='store_true', help='Launch the script without GUI')
     parser.add_argument('-url', help="tiktok video url\n an example is like this:\n"
@@ -71,7 +76,10 @@ if __name__ == '__main__':
                                               "protocol://username:password@host:port\n", )
     parser.add_argument('-nh', '--non-headless', default=False, action='store_true',
                         help="Launch the web browser in non headless mode", )
+
     args = parser.parse_args()
+    if is_executable:
+        args.func(args)
     if '-url' not in sys.argv and ('-ng' in sys.argv or '--no-gui' in sys.argv):
         raise parser.error('You must specify the tiktok url using -url in non gui mode')
     no_gui = args.no_gui
