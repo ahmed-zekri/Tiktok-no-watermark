@@ -37,6 +37,8 @@ optional arguments:
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 
+There is an executable file in the release section for non developers,if your antivirus blocked it, add it to exceptions.
+Windows defender always block most of python executables built with pyinstaller
 
 
 
