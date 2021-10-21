@@ -25,7 +25,7 @@ optional arguments:
   -url URL              tiktok video url an example is like this: 
                         https://www.tiktok.com/@luadoll/video/6974240019078794497
   -o OUTPUT, --output OUTPUT
-                        Specify thr file name in which the output file will be
+                        Specify the file name in which the output file will be
                         named in
   -p PROXY, --proxy PROXY
                         A proxy must follow the following pattern
