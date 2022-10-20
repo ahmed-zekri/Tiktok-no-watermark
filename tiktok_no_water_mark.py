@@ -2,9 +2,6 @@ import argparse
 import re
 import sys
 import tkinter as tk
-
-from win32api import GetSystemMetrics
-
 from selenuim_utils import SeleniumUtils
 
 
@@ -83,8 +80,8 @@ if __name__ == '__main__':
     if no_gui:
         launch_download()
         sys.exit()
-    screen_width = GetSystemMetrics(0)
-    screen_height = GetSystemMetrics(1)
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
     window.geometry(f"{int(screen_width / 2.5)}x{int(screen_height / 3)}")
     window.winfo_toplevel().title("Tiktok no watermark downloader")
     tiktok_hint = tk.Label(
